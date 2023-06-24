@@ -18,7 +18,10 @@ async function transform(rs: ReadableStream, w: WritableStream, context: Context
     .pipeThrough(new TextDecoderStream()) // Uint8Arrayをstringに変換
     .pipeThrough(makeTransform(context))
     .pipeThrough(new TextEncoderStream()) // to Uint8Array
-    .pipeTo(w)
+
+    // preventClose: true オプション未指定ではクローズされる
+    // prevent : 防ぐ
+    .pipeTo(w, {preventClose: true})
 }
 
 async function fetchToStream(url: string) {
@@ -29,10 +32,16 @@ async function fetchToStream(url: string) {
   return blob.stream()
 }
 
+export async function fetchTransform(url: string, w: WritableStream, context: Context) {
+  const res = await fetchToStream(url)
+  await transform(res, w, context)
+}
+
 // Learn more at https://deno.land/manual/examples/module_metadata#concepts
 if (import.meta.main) {
   const outfile = await Deno.open("out.txt", { create: true, write: true })
   const context = { name: "fooooooo3" }
-  const res = await fetchToStream("https://github.com/yoko0180/deno-handlebars/raw/master/template.hbs")
-  await transform(res, outfile.writable, context)
+  const url = "https://github.com/yoko0180/deno-handlebars/raw/master/template.hbs"
+  const w = outfile.writable
+  await fetchTransform(url, w, context)
 }
