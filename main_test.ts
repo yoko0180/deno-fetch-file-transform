@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.192.0/testing/asserts.ts"
-import { fetchTransform } from "./main.ts"
+import { fetchTransform } from "./fetchTransform.ts";
 
 /**
  * 関数内で指定されたwritableをクローズするかしないか
