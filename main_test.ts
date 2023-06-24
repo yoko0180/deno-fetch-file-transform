@@ -5,7 +5,7 @@ Deno.test("fetchTransform test", async () => {
   const TEST_OUT = "test-out.txt"
   const outfile = await Deno.open(TEST_OUT, { create: true, write: true })
   const context = { name: "foo" }
-  const url = "https://github.com/yoko0180/deno-handlebars/raw/master/template.hbs"
+  const url = "https://github.com/yoko0180/deno-fetch-transform/raw/master/test_template.hbs"
   const w = outfile.writable
   await fetchTransform(url, w, context)
   w.close()
