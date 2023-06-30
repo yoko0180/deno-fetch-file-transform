@@ -7,7 +7,7 @@ Deno.test("fetchTransform test", async () => {
   const context = { name: "foo" }
   const url = "https://github.com/yoko0180/deno-fetch-transform/raw/master/test_template.hbs"
   const w = outfile.writable
-  await fetchTransform(url, w, context)
+  await fetchTransform(new URL(url), w, context)
   w.close()
   assertEquals(Deno.readTextFileSync(TEST_OUT), "hello foo")
   await Deno.remove(TEST_OUT)

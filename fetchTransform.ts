@@ -24,7 +24,7 @@ async function transform(rs: ReadableStream, w: WritableStream, context: Context
     .pipeTo(w, {preventClose: true})
 }
 
-async function fetchToStream(url: string) {
+async function fetchToStream(url: URL) {
   const res = await fetch(url)
   const buf = await res.arrayBuffer()
   const data = new Uint8Array(buf)
@@ -32,7 +32,7 @@ async function fetchToStream(url: string) {
   return blob.stream()
 }
 
-export async function fetchTransform(url: string, w: WritableStream, context: Context) {
+export async function fetchTransform(url: URL, w: WritableStream, context: Context) {
   const res = await fetchToStream(url)
   await transform(res, w, context)
 }
